@@ -19,13 +19,13 @@ function DiscordRPC() {
       state: 'Playing Repuls.io',
       startTimestamp: new Date(),
 
-      // Party details for join invites
+      
        buttons: [
     { label: 'Play REPULS.IO', url: 'https://repuls.io' },
     { label: 'REPULS.IO Discord', url: 'https://discord.com/invite/2YKgx2HSfR' }
   ],
 
-      largeImageKey: '9692540870cd252f04a36a357d77b4da', // Make sure this matches your uploaded asset key
+      largeImageKey: '9692540870cd252f04a36a357d77b4da',
       largeImageText: 'Repuls.io'
     });
     console.log('Rich presence is now active');
@@ -45,12 +45,12 @@ function createWindow() {
 
   win.loadURL('https://repuls.io');
 
-  // Show window only when content is ready to avoid flicker
+ 
   win.once('ready-to-show', () => {
     win.show();
   });
 
-  // Open external links in default browser
+  
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: 'deny' };
@@ -64,7 +64,7 @@ function createWindow() {
     }
   });
 
-  // Remove menu and set fullscreen for cleaner UI
+
   win.removeMenu(true);
   win.setFullScreen(true);
   win.setTitle('Repuls-Client');

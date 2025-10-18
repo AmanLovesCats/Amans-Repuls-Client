@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
   packagerConfig: {
-    icon: path.resolve(__dirname, 'assets/icons/faviconV2')  // no extension
+    icon: path.resolve(__dirname, 'assets/icons/faviconV2') 
   },
   makers: [
     {
