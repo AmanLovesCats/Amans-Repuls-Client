@@ -1,4 +1,4 @@
-REPULS.IO is a game Developed by @developer-docski. This is just a native client created by me so that you can use the tiny benefits of a client before it's release. Currently the Client supports Windows and Linux because MacOS is not letting me created the file. 
+REPULS.IO is a game Developed by @developer-docski. This is just a native client created by me so that you can use the tiny benefits of a client before it's release. Currently the Client supports Windows only. You can create your own MacOS or Linux Package, it's not that hard.
 What this Client does:
 - Boosts fps a bit more than your normal browser
 - Uses your CPU and GPU for rendering
