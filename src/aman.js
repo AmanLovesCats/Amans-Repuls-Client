@@ -5,6 +5,34 @@ const RPC = require('discord-rpc');
 
 let win;
 
+app.commandLine.appendSwitch('disable-frame-rate-limit')
+app.commandLine.appendSwitch('disable-gpu-vsync')
+app.commandLine.appendSwitch('ignore-gpu-blacklist');
+app.commandLine.appendSwitch('disable-breakpad');
+app.commandLine.appendSwitch('disable-component-update');
+app.commandLine.appendSwitch('disable-print-preview');
+app.commandLine.appendSwitch('disable-metrics');
+app.commandLine.appendSwitch('disable-metrics-repo');
+app.commandLine.appendSwitch('smooth-scrolling');
+app.commandLine.appendSwitch('enable-javascript-harmony');
+app.commandLine.appendSwitch('enable-future-v8-vm-features');
+app.commandLine.appendSwitch('disable-hang-monitor');
+app.commandLine.appendSwitch('no-referrers');
+app.commandLine.appendSwitch('disable-2d-canvas-clip-aa');
+app.commandLine.appendSwitch('disable-bundled-ppapi-flash');
+app.commandLine.appendSwitch('disable-logging');
+app.commandLine.appendSwitch('disable-web-security');
+app.commandLine.appendSwitch('webrtc-max-cpu-consumption-percentage=100');
+app.commandLine.appendSwitch('enable-pointer-lock-options');
+app.commandLine.appendSwitch('disable-accelerated-video-decode', false);
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required')
+app.commandLine.appendSwitch('enable-quic');
+app.commandLine.appendSwitch('high-dpi-support','1');
+app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,CanvasOopRasterization,AcceleratedVideoDecode,UseSkiaRenderer');
+app.commandLine.appendSwitch('force_high_performance_gpu');
+app.commandLine.appendSwitch('js-flags', '--expose-gc');
+
+
 function init() {
   DiscordRPC();
   createWindow();
@@ -16,13 +44,14 @@ function DiscordRPC() {
 
   rpc.on('ready', () => {
     rpc.setActivity({
-      state: 'Playing Repuls.io',
-      startTimestamp: new Date(),
-
-      
-       buttons: [
-    { label: 'Play REPULS.IO', url: 'https://repuls.io' },
-    { label: 'REPULS.IO Discord', url: 'https://discord.com/invite/2YKgx2HSfR' }
+      state: 'A Docski Game',
+      details: 'Playing Repuls.io',
+      startTimestamp: Date.now(),
+      largeImageKey: '9692540870cd252f04a36a357d77b4da',
+      largeImageText: 'Repuls.io',
+      buttons: [
+        { label: 'Play REPULS.IO', url: 'https://repuls.io' },
+        { label: 'View Client', url: 'https://github.com/AmanLovesCats/Amans-Repuls-Client' }
   ],
 
       largeImageKey: '9692540870cd252f04a36a357d77b4da',
@@ -39,7 +68,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1920,
     height: 1080,
-    icon: path.resolve(__dirname, 'assets', 'icons', 'faviconV2.png'),
+    icon: path.resolve(__dirname, 'assets', 'icons', 'faviconV2'),
     show: false,
   });
 
