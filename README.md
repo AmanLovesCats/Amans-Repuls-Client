@@ -24,4 +24,6 @@ Currently the client DOES NOT support google login because only the developer(do
 
 You can check the files with an antivirus first if you like, there's not much code in there anyway.
 
+Contact me if you want to install this on MacOS/Linux, discord: aman_and_cats.
+
 Inspired by Nexide's Nexi Client.
