@@ -4,9 +4,12 @@ const shortcut = require('electron-localshortcut');
 const RPC = require('discord-rpc');
 
 let win;
+const GAME_URL = 'https://repuls.io';
+const RPC_CLIENT_ID = '1429162289206001677';
 
-app.commandLine.appendSwitch('disable-frame-rate-limit')
-app.commandLine.appendSwitch('disable-gpu-vsync')
+
+app.commandLine.appendSwitch('disable-frame-rate-limit');
+app.commandLine.appendSwitch('disable-gpu-vsync');
 app.commandLine.appendSwitch('ignore-gpu-blacklist');
 app.commandLine.appendSwitch('disable-breakpad');
 app.commandLine.appendSwitch('disable-component-update');
@@ -24,115 +27,135 @@ app.commandLine.appendSwitch('disable-logging');
 app.commandLine.appendSwitch('disable-web-security');
 app.commandLine.appendSwitch('webrtc-max-cpu-consumption-percentage=100');
 app.commandLine.appendSwitch('enable-pointer-lock-options');
-app.commandLine.appendSwitch('disable-accelerated-video-decode', false);
-app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required')
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 app.commandLine.appendSwitch('enable-quic');
 app.commandLine.appendSwitch('high-dpi-support','1');
 app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,CanvasOopRasterization,AcceleratedVideoDecode,UseSkiaRenderer');
 app.commandLine.appendSwitch('force_high_performance_gpu');
 app.commandLine.appendSwitch('js-flags', '--expose-gc');
 
+function setupDiscordRPC() {
+    const rpc = new RPC.Client({ transport: 'ipc' });
 
-function init() {
-  DiscordRPC();
-  createWindow();
-  shortCuts();
-}
-
-function DiscordRPC() {
-  const rpc = new RPC.Client({ transport: 'ipc' });
-
-  rpc.on('ready', () => {
-    rpc.setActivity({
-      state: 'A Docski Game',
-      details: 'Playing Repuls.io',
-      startTimestamp: Date.now(),
-      largeImageKey: '9692540870cd252f04a36a357d77b4da',
-      largeImageText: 'Repuls.io',
-      buttons: [
-        { label: 'Play REPULS.IO', url: 'https://repuls.io' },
-        { label: 'View Client', url: 'https://github.com/AmanLovesCats/Amans-Repuls-Client' }
-  ],
-
-      largeImageKey: '9692540870cd252f04a36a357d77b4da',
-      largeImageText: 'Repuls.io'
+    rpc.on('ready', () => {
+        rpc.setActivity({
+            state: 'Playing Repuls.io',
+            details: 'A Docski Game',
+            startTimestamp: Date.now(),
+            largeImageKey: '9692540870cd252f04a36a357d77b4da',
+            largeImageText: 'Repuls.io',
+            buttons: [
+                { label: 'Play REPULS.IO', url: 'https://repuls.io' },
+                { label: 'View Client', url: 'https://github.com/AmanLovesCats/Amans-Repuls-Client' }
+            ]
+        });
+        console.log('[RPC] Rich Presence active');
     });
-    console.log('Rich presence is now active');
-  });
 
-  rpc.login({ clientId: '1429162289206001677' }).catch(console.error);
+    rpc.login({ clientId: RPC_CLIENT_ID }).catch(console.error);
+
+    rpc.on('disconnected', () => {
+        console.log('[RPC] Disconnected, attempting reconnect...');
+        setTimeout(() => rpc.login({ clientId: RPC_CLIENT_ID }).catch(console.error), 10000);
+    });
 }
-
 
 function createWindow() {
-  win = new BrowserWindow({
-    width: 1920,
-    height: 1080,
-    icon: path.resolve(__dirname, 'assets', 'icons', 'faviconV2'),
-    show: false,
-  });
+    win = new BrowserWindow({
+        width: 1920,
+        height: 1080,
+        fullscreen: true,
+        title: 'Repuls-Client',
+        icon: path.resolve(__dirname, 'assets', 'icons', 'icon.ico'),
+        show: false,
+        webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true,
+            backgroundThrottling: false,
+            spellcheck: false,
+            sandbox: true
+        }
+    });
 
-  win.loadURL('https://repuls.io');
+    win.loadURL(GAME_URL);
 
- 
-  win.once('ready-to-show', () => {
-    win.show();
-  });
+    win.once('ready-to-show', () => win.show());
 
-  
-  win.webContents.setWindowOpenHandler(({ url }) => {
+    const allowedHost = new URL(GAME_URL).host;
+
+
+win.webContents.setWindowOpenHandler(({ url }) => {
+    const host = new URL(url).host;
+    if (host === allowedHost || host.includes('accounts.google.com')) {
+        
+        return { action: 'allow' };
+    }
+    
     shell.openExternal(url);
     return { action: 'deny' };
-  });
+});
 
-  const allowedHost = new URL('https://repuls.io').host;
-  win.webContents.on('will-navigate', (event, url) => {
-    if (new URL(url).host !== allowedHost) {
-      event.preventDefault();
-      shell.openExternal(url);
+
+win.webContents.on('will-navigate', (e, url) => {
+    const host = new URL(url).host;
+    if (host === allowedHost || host.includes('accounts.google.com')) {
+       
+        return;
     }
-  });
+    e.preventDefault();
+    shell.openExternal(url);
+});
 
+    win.removeMenu();
 
-  win.removeMenu(true);
-  win.setFullScreen(true);
-  win.setTitle('Repuls-Client');
-  win.on('page-title-updated', e => e.preventDefault());
+    win.webContents.on('did-fail-load', (event, code, desc) => {
+        console.error('[Error] Page failed to load:', desc);
+    });
 
-  win.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
-    console.error('Failed to load URL:', errorDescription);
-  });
+    win.webContents.on('dom-ready', () => {
+        console.log('[Renderer] DOM is ready');
+    });
 }
 
-function shortCuts() {
-  shortcut.register(win, 'F1', () => {
-    win.loadURL('https://repuls.io');
-    console.log('Loading assets');
-  });
-  shortcut.register(win, 'Alt+F4', () => {
-    app.exit(0);
-  });
-  shortcut.register(win, 'Ctrl+F5', () => {
-    win.webContents.session.clearStorageData();
-    app.relaunch();
-    app.exit();
-  });
-  shortcut.register(win, 'F9', () => {
-    win.webContents.openDevTools();
-    console.log('DevTools opened');
-  });
-  shortcut.register(win, 'F11', () => {
-    win.setSimpleFullScreen(!win.isSimpleFullScreen());
-  });
-  console.log('Shortcuts have been registered');
+function registerShortcuts() {
+    shortcut.register(win, 'F1', () => win.loadURL(GAME_URL));
+    shortcut.register(win, 'Alt+F4', () => app.quit());
+    shortcut.register(win, 'Ctrl+F5', async () => {
+        await win.webContents.session.clearCache();
+        app.relaunch();
+        app.quit();
+    });
+    shortcut.register(win, 'Ctrl+F1', async () => {
+        console.log('[Full Refresh] Clearing all data...');
+        try {
+            const ses = win.webContents.session;
+            await ses.clearCache();
+            await ses.clearStorageData();
+            console.log('[Full Refresh] Data cleared. Relaunching...');
+            app.relaunch();
+            app.quit();
+        } catch (err) {
+            console.error('[Full Refresh] Error:', err);
+        }
+    });
+    shortcut.register(win, 'F9', () => win.webContents.openDevTools());
+    shortcut.register(win, 'F7', () => win.loadURL(`${GAME_URL}/beta`));
+    shortcut.register(win, 'F11', () => win.setSimpleFullScreen(!win.isSimpleFullScreen()));
+    console.log('[Shortcuts] Registered successfully');
+}
+
+function init() {
+    createWindow();
+    registerShortcuts();
+    setupDiscordRPC();
 }
 
 app.on('ready', init);
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+    if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
