@@ -1,4 +1,4 @@
-REPULS.IO is a game developed by @developer-docski. This is just a native client made by me so that you can use the tiny benefits of a client before its release. Currently supports Windows(V1.20.0 Released)
+REPULS.IO is a game developed by [@developer-docski](https://github.com/tahirG?tab=sponsoring). This is just a native client made by me so that you can use the tiny benefits of a client before its release. Currently supports Windows(V1.20.0 Released)
 
 What this client does:
 - Boosts FPS a bit more than your browser.
@@ -21,7 +21,7 @@ Commands:
 - F11: Fullscreen
 - F7: Beta website
 
-Currently the client DOES NOT support Google login. Everything else works fine and smooth.
+Google Support added in Version 1.20.5
 
 You can check the files with an antivirus first if you like, there's not a lot in here anyway.
 
