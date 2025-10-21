@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
   packagerConfig: {
      asar: true,
-     icon: path.resolve(__dirname, 'assets', 'icons', 'faviconV2')
+     icon: path.resolve(__dirname, 'assets', 'icons', 'icon')
   },
   rebuildConfig: {},
   makers: [
