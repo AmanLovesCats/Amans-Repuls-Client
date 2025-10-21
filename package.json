@@ -1,7 +1,7 @@
 {
   "name": "amans_repuls_client",
   "productName": "Amans_Repuls_Client",
-  "version": "1.20.0",
+  "version": "1.20.5",
   "description": "Repuls.io client with Discord RPC and optimized performance",
   "main": "src/aman.js",
   "scripts": {
@@ -9,7 +9,10 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "build-win": "electron-builder --win",
+    "build-mac": "electron-builder --mac",
+    "build-linux": "electron-builder --linux"
   },
   "keywords": [],
   "author": "AmanLovesCats",
@@ -17,10 +20,10 @@
   "dependencies": {
     "discord-rpc": "^4.0.1",
     "electron-localshortcut": "^3.2.1",
-    "electron-squirrel-startup": "^1.0.1"
+    "electron-squirrel-startup": "^1.0.1",
+    "systeminformation": "^5.27.11"
   },
   "devDependencies": {
-    "electron": "^30.3.0",
     "@electron-forge/cli": "^7.10.2",
     "@electron-forge/maker-deb": "^7.10.2",
     "@electron-forge/maker-dmg": "^7.10.2",
@@ -29,9 +32,35 @@
     "@electron-forge/maker-zip": "^7.10.2",
     "@electron-forge/plugin-auto-unpack-natives": "^7.10.2",
     "@electron-forge/plugin-fuses": "^7.10.2",
-    "@electron/fuses": "^1.8.0"
+    "@electron/fuses": "^1.8.0",
+    "electron": "^30.3.0"
   },
   "config": {
     "forge": "./forge.config.js"
+  },
+  "build": {
+    "appId": "com.amansrepuls.client",
+    "productName": "Amans Repuls Client",
+    "files": [
+      "**/*"
+    ],
+    "directories": {
+      "buildResources": "assets/icons",
+      "output": "dist"
+    },
+    "win": {
+      "icon": "icon.ico"
+    },
+    "mac": {
+      "icon": "faviconV2.icns"
+    },
+    "linux": {
+      "icon": "icon.png",
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ]
+    }
   }
 }
