@@ -16,6 +16,7 @@ Some extra features:
 - Includes Discord RPC.
   
 Commands:
+- Ctrl +F1: Reload client with Full reset
 - Ctrl + F5: Reload with cache removal
 - F9: DevTools
 - F11: Fullscreen
