@@ -67,7 +67,7 @@ autoUpdater.setFeedURL({
     owner: 'AmanLovesCats',
     repo: 'Amans-Repuls-Client',
     private: false,
-    token: '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'
+    token: 'WwmkayDxGtl2eFd5U'
 });
 
 function setupAutoUpdater() {
@@ -271,3 +271,4 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
+
